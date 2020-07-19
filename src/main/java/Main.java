@@ -1,19 +1,28 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 
 public class Main {
 
-    public static void main(String[] args) throws FileNotFoundException, ParseException {
+    public static void main(String[] args) throws IOException, ParseException {
 
-        File file = new File("test.log");
-        Scanner scan = new Scanner(file);
+        //Read from File
+        //File file = new File("test.log");
+        //Scanner scan = new Scanner(file);
+
+        //Read logs from URL
+        URL url = new URL("https://raw.githubusercontent.com/alexwaw/readlogs/master/test.log");
+        Scanner scan = new Scanner(url.openStream());
+
         String fileContent = "";
 
         while (scan.hasNextLine()) {
@@ -32,7 +41,14 @@ public class Main {
             listOfLog.add(x);
         }
 
-        Map<String, List<List<String>>> mappedByService = listOfLog.stream().collect(Collectors.groupingBy(li -> li.get(1)));
+        Map<String, List<List<String>>> mappedByService = null;
+
+        try {
+            mappedByService = listOfLog.stream().collect(Collectors.groupingBy(li -> li.get(1)));
+        } catch (Exception e) {
+            System.out.println("Please verify the source of log file, " + e);
+        }
+
         Collection<List<List<String>>> groupedListByService = mappedByService.values();
 
         for (List<List<String>> x : groupedListByService) {
