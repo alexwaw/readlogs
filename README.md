@@ -2,22 +2,21 @@
 
 ##1. Description of project
 
-    App reads logs and provide the following information:
+1. App reads logs and provide the following information:
+- Name of service
+- Number of requests made to the service
+- Maximum time of request execution
 
-    Name of service
-    Number of requests made to the service
-    Maximum time of request execution
+Format of logs:  
+2015-10-28T12:24:33,803 TRACE [OperImpl] entry with (addClient:97900)  
+2015-10-28T12:24:34,002 TRACE [OperImpl] entry with (addClient:97900)  
 
-    Format of logs:
-    2015-10-28T12:24:33,803 TRACE [OperImpl] entry with (addClient:97900)
-    2015-10-28T12:24:34,002 TRACE [OperImpl] entry with (addClient:97900
-
-    Source file of logs: https://raw.githubusercontent.com/alexwaw/readlogs/master/test.log
+Source file of logs: https://raw.githubusercontent.com/alexwaw/readlogs/master/test.log
 
 ##2. Running app
 
-    Running from IDE by executing Main.
-    Running from docker: https://hub.docker.com/r/alexdr13/readapp/tags by executing command "docker pull alexdr13/readapp:latest"
+Running from IDE by executing Main.
+Running from docker: https://hub.docker.com/r/alexdr13/readapp/tags by executing command "docker pull alexdr13/readapp:latest"
 
 ##3. Example of execution:
 
