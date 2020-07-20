@@ -1,8 +1,7 @@
 ### Read logs app
 
 ## 1. Description of project
-
-1. App reads logs and provide the following information:
+App reads logs and provide the following information:
 - Name of service
 - Number of requests made to the service
 - Maximum time of request execution
