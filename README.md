@@ -14,9 +14,8 @@ Format of logs:
 Source file of logs: https://raw.githubusercontent.com/alexwaw/readlogs/master/test.log
 
 ## 2. Running app
-
-Running from IDE by executing Main.
-Running from docker: https://hub.docker.com/r/alexdr13/readapp/tags by executing command "docker pull alexdr13/readapp:latest"
+- Running from IDE by executing Main.
+- Running from docker: https://hub.docker.com/r/alexdr13/readapp/tags by executing command "docker pull alexdr13/readapp:latest"
 
 ## 3. Example of execution:
 
