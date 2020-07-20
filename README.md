@@ -1,6 +1,6 @@
-###Read logs app
+### Read logs app
 
-##1. Description of project
+## 1. Description of project
 
 1. App reads logs and provide the following information:
 - Name of service
@@ -13,12 +13,12 @@ Format of logs:
 
 Source file of logs: https://raw.githubusercontent.com/alexwaw/readlogs/master/test.log
 
-##2. Running app
+## 2. Running app
 
 Running from IDE by executing Main.
 Running from docker: https://hub.docker.com/r/alexdr13/readapp/tags by executing command "docker pull alexdr13/readapp:latest"
 
-##3. Example of execution:
+## 3. Example of execution:
 
 Source file:  
 2015-10-28T12:24:33,803 TRACE [OperImpl] entry with (addClient:97900)  
