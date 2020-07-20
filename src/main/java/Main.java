@@ -1,23 +1,13 @@
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
-
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 
 public class Main {
 
     public static void main(String[] args) throws IOException, ParseException {
-
-        //Read from File
-        //File file = new File("test.log");
-        //Scanner scan = new Scanner(file);
 
         //Read logs from URL
         URL url = new URL("https://raw.githubusercontent.com/alexwaw/readlogs/master/test.log");
@@ -34,11 +24,11 @@ public class Main {
         List<List<String>> listOfLog = new ArrayList<>();
 
         for (String l : list) {
-            List<String> x = new ArrayList<>();
-            x.add(getTime(l));
-            x.add(getService(l));
-            x.add(getRequestId(l));
-            listOfLog.add(x);
+            List<String> listOfTimeServiceRequestId = new ArrayList<>();
+            listOfTimeServiceRequestId.add(Utils.getTime(l));
+            listOfTimeServiceRequestId.add(Utils.getService(l));
+            listOfTimeServiceRequestId.add(Utils.getRequestId(l));
+            listOfLog.add(listOfTimeServiceRequestId);
         }
 
         Map<String, List<List<String>>> mappedByService = null;
@@ -51,46 +41,23 @@ public class Main {
 
         Collection<List<List<String>>> groupedListByService = mappedByService.values();
 
-        for (List<List<String>> x : groupedListByService) {
-            int numberOfRequests = x.size() / 2;
+        for (List<List<String>> allRequestsToOneService : groupedListByService) {
+            int numberOfRequests = allRequestsToOneService.size() / 2;
 
-            Map<String, List<List<String>>> mappedByService1RequestId = x.stream().collect(Collectors.groupingBy(li -> li.get(2)));
+            Map<String, List<List<String>>> mappedByService1RequestId = allRequestsToOneService.stream().collect(Collectors.groupingBy(li -> li.get(2)));
             Collection<List<List<String>>> groupedListRequestId = mappedByService1RequestId.values();
             List<Long> requestTime = new ArrayList<>();
 
-            for (List<List<String>> z : groupedListRequestId) {
-                Date requestEntryTime = convertStringToDateFormat(z.get(0).get(0));
-                Date responseExitTime = convertStringToDateFormat(z.get(1).get(0));
+            for (List<List<String>> requestsToId : groupedListRequestId) {
+                Date requestEntryTime = Utils.convertStringToDateFormat(requestsToId.get(0).get(0));
+                Date responseExitTime = Utils.convertStringToDateFormat(requestsToId.get(1).get(0));
                 long responseTimeInMillis = responseExitTime.getTime() - requestEntryTime.getTime();
                 requestTime.add(responseTimeInMillis);
             }
             String maxWaitTime = DurationFormatUtils.formatDuration(Collections.max(requestTime), "s,SSS");
-            System.out.println("1. Service: " + x.get(0).get(1) + "\n"
+            System.out.println("1. Service: " + allRequestsToOneService.get(0).get(1) + "\n"
                     + "2. Number of requests: " + numberOfRequests + "\n"
                     + "3. Maximum time of request execution: " + maxWaitTime + " sec." + "\n");
         }
-    }
-
-    private static String getService(String lineOfLog) {
-        String serviceAndRequestId = StringUtils.substringBetween(lineOfLog, "(", ")");
-        String service = StringUtils.substringBetween(serviceAndRequestId, "", ":");
-        return service;
-    }
-
-    private static String getRequestId(String lineOfLog) {
-        String serviceAndRequestId = StringUtils.substringBetween(lineOfLog, "(", ")");
-        String requestId = StringUtils.substringAfter(serviceAndRequestId, ":");
-        return requestId;
-    }
-
-    private static String getTime(String lineOfLog) {
-        String time = StringUtils.substring(lineOfLog, 0, 23);
-        return time;
-    }
-
-    private static Date convertStringToDateFormat(String stringTime) throws ParseException {
-        DateFormat timeOfLogFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss,SSS");
-        Date date = timeOfLogFormat.parse(stringTime);
-        return date;
     }
 }
